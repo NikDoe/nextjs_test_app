@@ -24,7 +24,12 @@ export async function generateMetadata({
 
 async function getSinglePost(id: string): Promise<Post> {
   const response = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${id}`
+    `https://jsonplaceholder.typicode.com/posts/${id}`,
+    {
+      next: {
+        revalidate: 60,
+      },
+    }
   );
   return response.json();
 }

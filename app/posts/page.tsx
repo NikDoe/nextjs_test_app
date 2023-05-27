@@ -8,13 +8,17 @@ type Post = {
 };
 
 async function getPosts(): Promise<Post[]> {
-  const response = await fetch("https://jsonplaceholder.typicode.com/posts");
+  const response = await fetch("https://jsonplaceholder.typicode.com/posts", {
+    next: {
+      revalidate: 60,
+    },
+  });
   return response.json();
 }
 
 export default async function Posts() {
   const posts = await getPosts();
-  
+
   return (
     <>
       <h1>список постов</h1>
