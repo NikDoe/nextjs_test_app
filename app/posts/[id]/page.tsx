@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 
 type Props = {
   params: {
@@ -15,7 +15,7 @@ type Post = {
 
 export async function generateMetadata({
   params: { id },
-}: Props): Promise<Metadata> {
+}: Props): Promise<Metadata | Error> {
   const { title } = await getSinglePost(id);
   return {
     title,
@@ -31,6 +31,9 @@ async function getSinglePost(id: string): Promise<Post> {
       },
     }
   );
+
+  if (!response.ok) throw new Error("Не удалось загрузить статью");
+
   return response.json();
 }
 

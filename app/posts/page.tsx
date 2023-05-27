@@ -13,6 +13,9 @@ async function getPosts(): Promise<Post[]> {
       revalidate: 60,
     },
   });
+
+  if (!response.ok) throw new Error("Не удалось загрузить посты");
+
   return response.json();
 }
 
