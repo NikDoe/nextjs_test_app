@@ -1,10 +1,12 @@
+import { Metadata } from "next";
+
 type Props = {
   params: {
     id: string;
   };
 };
 
-export function generateMetadata({ params: { id } }: Props) {
+export async function generateMetadata({ params: { id } }: Props): Promise<Metadata> {
 	return {
 		title: `страница поста ${id}`,
 	}
