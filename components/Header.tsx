@@ -1,11 +1,15 @@
-import Link from "next/link";
+import { Navigation } from "./Navigation";
+
+const navItems = [
+  { href: "/", label: "Главная" },
+  { href: "/posts", label: "Посты" },
+  { href: "/todos", label: "Todos" },
+];
 
 const Header = () => {
   return (
     <header>
-      <Link href="/">Главная</Link>
-      <Link href="/posts">Посты</Link>
-      <Link href="/todos">Todos</Link>
+      <Navigation navItems={navItems} />
     </header>
   );
 };
