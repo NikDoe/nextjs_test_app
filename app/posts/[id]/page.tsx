@@ -1,3 +1,5 @@
+import getAllPosts from "@/lib/getAllPosts";
+import getSinglePost from "@/lib/getSinglePost";
 import type { Metadata } from "next";
 
 type Props = {
@@ -6,35 +8,13 @@ type Props = {
   };
 };
 
-type Post = {
-  userId: number;
-  id: number;
-  title: string;
-  body: string;
-};
-
 export async function generateMetadata({
   params: { id },
-}: Props): Promise<Metadata | Error> {
+}: Props): Promise<Metadata> {
   const { title } = await getSinglePost(id);
   return {
     title,
   };
-}
-
-async function getSinglePost(id: string): Promise<Post> {
-  const response = await fetch(
-    `https://jsonplaceholder.typicode.com/posts/${id}`,
-    {
-      next: {
-        revalidate: 60,
-      },
-    }
-  );
-
-  if (!response.ok) throw new Error("Не удалось загрузить статью");
-
-  return response.json();
 }
 
 export default async function Post({ params: { id } }: Props) {
@@ -45,4 +25,12 @@ export default async function Post({ params: { id } }: Props) {
       <p>{post.body}</p>
     </>
   );
+}
+
+export async function generateStaticParams() {
+  const posts = await getAllPosts();
+
+  return posts.map((post) => ({
+    id: post.id.toString(),
+  }));
 }
