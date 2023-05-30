@@ -1,4 +1,4 @@
-export default async function getSinglePost(id: string): Promise<Post> {
+export default async function getSinglePost(id: string): Promise<Post | undefined> {
     const response = await fetch(
         `https://jsonplaceholder.typicode.com/posts/${id}`,
         {
@@ -8,7 +8,7 @@ export default async function getSinglePost(id: string): Promise<Post> {
         }
     );
 
-    if (!response.ok) throw new Error("Не удалось загрузить статью");
+    if (!response.ok) return undefined;
 
     return response.json();
 }

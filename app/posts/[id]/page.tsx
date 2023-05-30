@@ -1,6 +1,7 @@
 import getAllPosts from "@/lib/getAllPosts";
 import getSinglePost from "@/lib/getSinglePost";
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 
 type Props = {
   params: {
@@ -11,14 +12,23 @@ type Props = {
 export async function generateMetadata({
   params: { id },
 }: Props): Promise<Metadata> {
-  const { title } = await getSinglePost(id);
+  const post = await getSinglePost(id);
+
+  if (!post)
+    return {
+      title: "Пост не найден",
+    };
+
   return {
-    title,
+    title: post.title,
   };
 }
 
 export default async function Post({ params: { id } }: Props) {
   const post = await getSinglePost(id);
+
+  if(!post) return notFound()
+
   return (
     <>
       <h1>{post.title}</h1>
